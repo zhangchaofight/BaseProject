@@ -13,5 +13,5 @@ package com.example.administrator.baseproject.contract;
  * 6.数据的设置、展示
  * 7.对话框的初始化
  */
-public interface BaseActivity {
+public interface BaseActivityInterface {
 }

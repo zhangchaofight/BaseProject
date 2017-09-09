@@ -5,7 +5,7 @@ package com.example.administrator.baseproject.contract;
  * 作为一个presenter应该涉及到的大的方面
  */
 
-public interface BasePresenter {
+public interface BasePresenterInterface {
 
     /**
      * 数据的输入：
