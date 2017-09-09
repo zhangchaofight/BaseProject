@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.administrator.baseproject.MainActivity">
+
+    <!--<com.example.administrator.baseproject.view.PullDownVG-->
+        <!--android:id="@+id/haoshayizhidai"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<TextView-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:text="呆呆"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:textSize="30sp"/>-->
+        <!--<TextView-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:text="WE逗比粉"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:textSize="30sp"/>-->
+    <!--</com.example.administrator.baseproject.view.PullDownVG>-->
+
+
+    <com.example.administrator.baseproject.view.PullZoomVG
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="WE逗比粉"
+            android:background="@color/colorPrimary"
+            android:textSize="30sp"/>
+    </com.example.administrator.baseproject.view.PullZoomVG>
+</LinearLayout>
