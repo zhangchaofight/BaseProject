@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.administrator.baseproject.utils.ScreenUtils;
+import com.example.administrator.baseproject.view.ZCToast;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -27,15 +27,19 @@
     <!--</com.example.administrator.baseproject.view.PullDownVG>-->
 
 
-    <com.example.administrator.baseproject.view.PullZoomVG
+    <!--<com.example.administrator.baseproject.view.PullZoomVG-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<TextView-->
+            <!--android:layout_height="80dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:text="WE逗比粉"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:textSize="30sp"/>-->
+    <!--</com.example.administrator.baseproject.view.PullZoomVG>-->
+    <com.example.administrator.baseproject.view.PullDownVG0
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:layout_height="80dp"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:text="WE逗比粉"
-            android:background="@color/colorPrimary"
-            android:textSize="30sp"/>
-    </com.example.administrator.baseproject.view.PullZoomVG>
+    </com.example.administrator.baseproject.view.PullDownVG0>
 </LinearLayout>

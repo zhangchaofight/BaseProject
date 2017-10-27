@@ -79,7 +79,6 @@ public class PullDownVG extends LinearLayout{
     public void init(){
         mContext = getContext();
         setOrientation(LinearLayout.VERTICAL);
-
         mScroller = new Scroller(mContext);
     }
 
