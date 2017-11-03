@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="54.3dp"
+    android:background="#123456">
+
+    <ImageView
+        android:id="@+id/list_item_icon"
+        android:layout_height="32dp"
+        android:layout_width="32dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="11dp"
+        android:background="#666666">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/list_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="57dp"
+        android:layout_marginBottom="16dp"
+        android:maxWidth="224dp"
+        android:singleLine="true"
+        android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:background="#383838">
+    </TextView>
+
+    <view
+        android:id="@+id/list_item_redpot"
+        android:layout_height="10dp"
+        android:layout_width="10dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="22dp"
+        android:layout_toRightOf="@id/list_item_name"
+        android:background="#FF3B2F">
+    </view>
+
+    <view
+        android:visibility="gone"
+        android:id="@+id/list_item_number0"
+        android:layout_height="15dp"
+        android:layout_width="15dp"
+        android:layout_toRightOf="@id/list_item_name"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="22dp"
+        android:background="#FF3B2F">
+    </view>
+
+    <view
+        android:visibility="gone"
+        android:id="@+id/list_item_number1"
+        android:layout_height="15dp"
+        android:layout_width="29dp"
+        android:layout_toRightOf="@id/list_item_name"
+        android:layout_marginTop="22dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="22dp"
+        android:background="#FF3B2F">
+    </view>
+
+    <View
+        android:id="@+id/list_item_mark"
+        android:layout_height="10dp"
+        android:layout_width="15dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="22dp"
+        android:layout_alignParentRight="true"
+        android:background="#4A90E2">
+    </View>
+
+    <View
+        android:id="@+id/list_item_short_line"
+        android:layout_height="0.3dp"
+        android:layout_width="345dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+    </View>
+    <View
+        android:id="@+id/list_item_long_line"
+        android:layout_height="0.3dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+    </View>
+</RelativeLayout>

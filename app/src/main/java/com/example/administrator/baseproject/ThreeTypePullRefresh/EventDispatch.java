@@ -140,6 +140,7 @@ public class EventDispatch extends ViewGroup{
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 isMoving = false;
+                scrollTo(0 , 0);
                 break;
         }
         lastY = y;
@@ -175,6 +176,10 @@ public class EventDispatch extends ViewGroup{
         top = lv.getChildAt(0).getTop();
         itemHeight = lv.getChildAt(0).getMeasuredHeight();
         return pos * itemHeight - top;
+    }
+
+    private boolean isLVTopVisible() {
+        return getLVFirstItemTop() == 0 ? true : false;
     }
 
     private void setStatus(int status) {
