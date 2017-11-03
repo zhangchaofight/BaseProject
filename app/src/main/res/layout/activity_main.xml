@@ -50,4 +50,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </com.example.administrator.baseproject.view.DispatchTestVG>
+
+
+
+    <!--<com.example.administrator.baseproject.view.MyImageChooserView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+    <!--</com.example.administrator.baseproject.view.MyImageChooserView>-->
 </LinearLayout>

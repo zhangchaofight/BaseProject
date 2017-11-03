@@ -14,6 +14,10 @@ import android.view.View;
 
 public class ZCShapeView extends View {
 
+    private float width = 30f;
+    private float k = 1.73f;
+
+
     public ZCShapeView(Context context) {
         super(context);
     }
@@ -31,6 +35,5 @@ public class ZCShapeView extends View {
         super.onDraw(canvas);
         Paint paint = new Paint();
         paint.setColor(Color.GRAY);
-        canvas.drawCircle(0, 0, 20, paint);
     }
 }
