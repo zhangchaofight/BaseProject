@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -53,14 +54,31 @@
 
 
 
-    <!--<com.example.administrator.baseproject.view.MyImageChooserView-->
+    <com.example.administrator.baseproject.view.MyImageChooserView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.example.administrator.baseproject.view.MyImageChooserView>
+
+
+    <!--<com.example.administrator.baseproject.view.ZCShapeView-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="300dp">-->
+    <!--</com.example.administrator.baseproject.view.ZCShapeView>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/title_test"-->
+        <!--android:layout_height="100dp"-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-    <!--</com.example.administrator.baseproject.view.MyImageChooserView>-->
+        <!--android:gravity="center"-->
+        <!--android:text="abcdefg"-->
+        <!--android:textSize="30sp">-->
+    <!--</TextView>-->
+    <!--<EditText-->
+        <!--android:id="@+id/button_test"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:hint="yyy"-->
+        <!--android:gravity="center">-->
+    <!--</EditText>-->
 
-
-    <com.example.administrator.baseproject.view.ZCShapeView
-        android:layout_width="300dp"
-        android:layout_height="300dp">
-    </com.example.administrator.baseproject.view.ZCShapeView>
 </LinearLayout>

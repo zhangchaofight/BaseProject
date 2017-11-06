@@ -1,6 +1,5 @@
 package com.example.administrator.baseproject.view;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -121,6 +119,7 @@ public class MyImageChooserView extends LinearLayout{
                 int move = nowX - lastX;
                 params.leftMargin += move;
                 getChildAt(0).setLayoutParams(params);
+                Log.d(TAG, "onTouchEvent: " + getCurrentIndex(params.leftMargin));
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
@@ -132,19 +131,27 @@ public class MyImageChooserView extends LinearLayout{
         return true;
     }
 
+    private int getCurrentIndex(int movedX) {
+        return -movedX / viewWidth;
+    }
+
     private int calculateDeltaX(int movedX) {
-        if (movedX == 0) {
+        if (movedX >= 0) {
             return 0;
         }
-        movedX = -movedX;
-        int i = movedX / viewWidth;
-        if (i < 0) {
-            return 0;
+        int min = -(getChildCount() - 1) * viewWidth;
+        if (movedX < min) {
+            return -(getChildCount() - 1) * viewWidth;
         }
-        if (i > getChildCount() - 1) {
-            return -viewWidth * (getChildCount() - 1);
+        int result = 0 ;
+        for (int i = 0; i < getChildCount(); i++) {
+            if (params.leftMargin + viewWidth * i >= -0.5 * viewWidth &&
+                    params.leftMargin + viewWidth * i < 0.5 * viewWidth) {
+                result = i;
+                break;
+            }
         }
-        return -viewWidth *i;
+        return - result * viewWidth;
     }
 
     boolean isHide = true;
