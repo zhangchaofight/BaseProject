@@ -66,7 +66,7 @@ public class OWLodingView extends View {
     }
 
     public void play() {
-        
+
     }
 
     public void pause() {

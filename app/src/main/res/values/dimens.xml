@@ -2,11 +2,12 @@
 <resources>
     <dimen name="hide_header_height">-100dp</dimen>
     <dimen name="ZCShapeViewSize">100dp</dimen>
+
     <dimen name="total_height">120dp</dimen>
     <dimen name="total_width">334dp</dimen>
-    <dimen name="center_distance">114dp</dimen>
+    <dimen name="center_distance">120dp</dimen>
     <dimen name="icon_size">60dp</dimen>
-    <dimen name="left_margin">-54dp</dimen>
+    <dimen name="left_margin">0dp</dimen>
 
     <dimen name="OWLoading_width">100dp</dimen>
     <dimen name="OWLoading_space">10dp</dimen>
