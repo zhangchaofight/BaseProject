@@ -118,6 +118,8 @@ public class IconSelecterView extends LinearLayout {
             params = (MarginLayoutParams) getChildAt(0).getLayoutParams();
             params.leftMargin = (int) leftMargin;
             getChildAt(0).setLayoutParams(params);
+            getChildAt(1).setScaleX(1f);
+            getChildAt(1).setScaleY(1f);
             isLayouted = true;
         }
     }
@@ -156,8 +158,9 @@ public class IconSelecterView extends LinearLayout {
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                params.leftMargin = calculateX(params.leftMargin);
-                getChildAt(0).setLayoutParams(params);
+//                params.leftMargin = calculateX(params.leftMargin);
+//                getChildAt(0).setLayoutParams(params);
+                playActionUpAnimation(params.leftMargin);
                 break;
         }
         lastX = nowX;
@@ -180,18 +183,24 @@ public class IconSelecterView extends LinearLayout {
     }
 
     private void doScale(int leftMargin) {
-        int index = Math.abs(leftMargin) / (int) centerDistance + 1;
+        int index = -leftMargin / (int) centerDistance + 1;
         int delta = Math.abs(leftMargin) % (int) centerDistance;
         float scale = 1 - (float) delta / (2 * centerDistance);
+        if (scale < 0.5f) {
+            scale = 0.5f;
+        }
+        if (leftMargin >= 0) {
+            index--;
+            scale = 1.5f - scale;
+        }
         if (index >= 0 && index < defaultIconNum) {
             getChildAt(index).setScaleX(scale);
-
             getChildAt(index).setScaleY(scale);
         }
-        if (++index >= 0 && ++index < defaultIconNum) {
-
-            getChildAt(index).setScaleX(1 - scale);
-            getChildAt(index).setScaleY(1 - scale);
+        index++;
+        if (index >= 0 && index < defaultIconNum) {
+            getChildAt(index).setScaleX(1.5f - scale);
+            getChildAt(index).setScaleY(1.5f - scale);
         }
     }
 
@@ -205,7 +214,7 @@ public class IconSelecterView extends LinearLayout {
         }
     }
 
-    private final int DURATION = 1000;
+    private final int DURATION = 200;
     private void playActionUpAnimation(final int leftMargin) {
         int endMargin = calculateX(leftMargin);
         ValueAnimator animator = ValueAnimator.ofInt(leftMargin, endMargin);
@@ -217,7 +226,7 @@ public class IconSelecterView extends LinearLayout {
                 int left = (int) valueAnimator.getAnimatedValue();
                 params.leftMargin = left;
                 getChildAt(0).setLayoutParams(params);
-                doScale(leftMargin);
+                doScale(left);
             }
         });
         animator.start();
