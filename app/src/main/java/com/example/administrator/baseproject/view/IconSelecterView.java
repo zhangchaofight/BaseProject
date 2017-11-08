@@ -96,16 +96,6 @@ public class IconSelecterView extends LinearLayout {
         return iv;
     }
 
-    private TextView getTextView() {
-        TextView iv = new TextView(getContext());
-        LayoutParams params = new LayoutParams((int) centerDistance, (int) centerDistance);
-        params.gravity = Gravity.CENTER;
-        iv.setLayoutParams(params);
-        iv.setScaleX(0.5f);
-        iv.setScaleY(0.5f);
-        return iv;
-    }
-
     boolean isLayouted = false;
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -162,7 +152,7 @@ public class IconSelecterView extends LinearLayout {
                 int move = nowX - lastX;
                 params.leftMargin += move;
                 getChildAt(0).setLayoutParams(params);
-//                doScale(getChildAt(currentIndex), calculateDelta(params.leftMargin));
+                doScale(params.leftMargin);
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
@@ -175,75 +165,32 @@ public class IconSelecterView extends LinearLayout {
     }
 
     private int calculateX(int startX) {
-        if (startX >= 1.5 * centerDistance + leftMargin) {
-            return (int) centerDistance + (int) leftMargin;
+        if (startX >= centerDistance) {
+            return (int) centerDistance;
         }
-        float min = -(float) (((float) defaultIconNum - 0.5) * centerDistance - leftMargin);
-        if (startX <= min) {
-            return -(int) (((float) defaultIconNum - 1) * centerDistance - leftMargin);
+        if (startX <= -centerDistance * (defaultIconNum - 2)) {
+            return -(int) centerDistance * (defaultIconNum - 2);
         }
-        int index = 0;
-        int leftBorder = (int) (0.5 * centerDistance + leftMargin);
-        int rightBorder = (int) (1.5 * centerDistance + leftMargin);
-        for (int i = 0; i < defaultIconNum; i++) {
-            int itemLeft = (int) (startX + i * centerDistance);
-            if (itemLeft >= leftBorder && itemLeft < rightBorder) {
-                index = i;
-                break;
-            }
+        int index = Math.abs(startX) / (int) centerDistance;
+        int delta = Math.abs(startX) % (int) centerDistance;
+        if (delta > centerDistance / 2) {
+            index++;
         }
-        return -(int) ((index - 0.5) * centerDistance - leftMargin);
+        return -index * (int) centerDistance;
     }
 
-    private int currentIndex = 0;
-    private int getImageViewIndex(int left) {
-        left -= leftMargin;
-        if (left == 0) {
-            currentIndex = 0;
-        } else {
-            currentIndex =  -left / (int) centerDistance;
+    private void doScale(int leftMargin) {
+        int index = Math.abs(leftMargin) / (int) centerDistance + 1;
+        int delta = Math.abs(leftMargin) % (int) centerDistance;
+        float scale = 1 - (float) delta / (2 * centerDistance);
+        if (index >= 0 && index < defaultIconNum) {
+            getChildAt(index).setScaleX(scale);
+            getChildAt(index).setScaleY(scale);
         }
-        return currentIndex;
-    }
-
-    //true->right  false->left
-    private void doScale(View view, int delta) {
-        float scale;
-        if (delta == 0) {
-            scale = 2;
-        } else {
-            scale = - (float) delta / centerDistance + 2f;
+        if (++index >= 0 && ++index < defaultIconNum) {
+            getChildAt(index).setScaleX(1 - scale);
+            getChildAt(index).setScaleY(1 - scale);
         }
-        view.setScaleX(scale);
-        view.setScaleY(scale);
-    }
-
-    private int calculateDelta(int startX) {
-        int itemLeft = 0;
-        int leftBorder = (int) (0.5 * centerDistance + leftMargin);
-        int rightBorder = (int) (1.5 * centerDistance + leftMargin);
-        for (int i = 0; i < defaultIconNum; i++) {
-            itemLeft = (int) (startX + i * centerDistance);
-            if (itemLeft >= leftBorder && itemLeft < rightBorder) {
-                currentIndex = i;
-                break;
-            }
-        }
-        return Math.abs(itemLeft - leftBorder);
-    }
-
-    private final int DURATION = 1000;
-    private void playAnimation(int startX, int endX) {
-        ValueAnimator animator = ValueAnimator.ofInt(startX, endX);
-        int duration = DURATION;
-        animator.setDuration(duration);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-
-            }
-        });
-        animator.start();
     }
 
     public void setImages(List<Bitmap> bitmapList) {
@@ -254,5 +201,23 @@ public class IconSelecterView extends LinearLayout {
                 ((ImageView) getChildAt(i)).setImageBitmap(bitmapList.get(i));
             }
         }
+    }
+
+    private final int DURATION = 1000;
+    private void playActionUpAnimation(final int leftMargin) {
+        int endMargin = calculateX(leftMargin);
+        ValueAnimator animator = ValueAnimator.ofInt(leftMargin, endMargin);
+        int duration = DURATION;
+        animator.setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int left = (int) valueAnimator.getAnimatedValue();
+                params.leftMargin = left;
+                getChildAt(0).setLayoutParams(params);
+                doScale(leftMargin);
+            }
+        });
+        animator.start();
     }
 }

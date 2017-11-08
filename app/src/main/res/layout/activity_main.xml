@@ -88,4 +88,10 @@
         android:layout_gravity="center_horizontal">
     </com.example.administrator.baseproject.view.IconSelecterView>
 
+    <View
+        android:layout_gravity="center_horizontal"
+        android:layout_height="10dp"
+        android:layout_width="10dp"
+        android:background="@color/green">
+    </View>
 </LinearLayout>
