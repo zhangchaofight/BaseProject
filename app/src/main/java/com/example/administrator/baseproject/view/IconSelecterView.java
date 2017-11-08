@@ -165,7 +165,7 @@ public class IconSelecterView extends LinearLayout {
     }
 
     private int calculateX(int startX) {
-        if (startX >= centerDistance) {
+        if (startX >= centerDistance / 2) {
             return (int) centerDistance;
         }
         if (startX <= -centerDistance * (defaultIconNum - 2)) {
@@ -185,9 +185,11 @@ public class IconSelecterView extends LinearLayout {
         float scale = 1 - (float) delta / (2 * centerDistance);
         if (index >= 0 && index < defaultIconNum) {
             getChildAt(index).setScaleX(scale);
+
             getChildAt(index).setScaleY(scale);
         }
         if (++index >= 0 && ++index < defaultIconNum) {
+
             getChildAt(index).setScaleX(1 - scale);
             getChildAt(index).setScaleY(1 - scale);
         }
