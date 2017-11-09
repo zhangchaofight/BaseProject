@@ -7,14 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.administrator.baseproject.R;
 
@@ -26,22 +23,19 @@ import java.util.List;
 
 public class IconSelecterView extends LinearLayout {
 
-    private float totalWidth;
-    private float totalHeight;
-    private float iconSize;
+    private final static int DURATION = 200;
+
+    private int currentIndex = 1;
+    private int defaultIconNum = 5;
+
+    private MarginLayoutParams params;
     private float centerDistance;
     private float leftMargin;
-    
-    private int defaultIconNum = 5;
-    
-    private MarginLayoutParams params;
-
     private int slop;
+    private int lastX;
+    boolean isLayouted = false;
     
-    private List<Bitmap> bitmapList; 
-
-    private int leftBorder;
-    private int rightBorder;
+    private List<Bitmap> bitmapList;
 
     public IconSelecterView(Context context) {
         super(context);
@@ -65,19 +59,10 @@ public class IconSelecterView extends LinearLayout {
     }
 
     private void initParams(Context context) {
-        totalHeight = context.getResources().getDimension(R.dimen.total_height);
-        totalWidth = context.getResources().getDimension(R.dimen.total_width);
         centerDistance = context.getResources().getDimension(R.dimen.center_distance);
-        iconSize = context.getResources().getDimension(R.dimen.icon_size);
         leftMargin = context.getResources().getDimension(R.dimen.left_margin);
 
         slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        initBorder();
-    }
-
-    private void initBorder() {
-        leftBorder = (int) (0.5 * centerDistance + leftMargin);
-        rightBorder = (int) (1.5 * centerDistance + leftMargin);
     }
 
     private void initView() {
@@ -96,12 +81,9 @@ public class IconSelecterView extends LinearLayout {
         return iv;
     }
 
-    boolean isLayouted = false;
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        Log.d("zzzzz", "onLayout: executed");
-
         if (!isLayouted) {
             Resources res = getContext().getResources();
             ((ImageView)getChildAt(0)).
@@ -124,7 +106,6 @@ public class IconSelecterView extends LinearLayout {
         }
     }
 
-    private int lastX;
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int now = (int) ev.getRawX();
@@ -158,8 +139,6 @@ public class IconSelecterView extends LinearLayout {
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-//                params.leftMargin = calculateX(params.leftMargin);
-//                getChildAt(0).setLayoutParams(params);
                 playActionUpAnimation(params.leftMargin);
                 break;
         }
@@ -193,6 +172,7 @@ public class IconSelecterView extends LinearLayout {
             index--;
             scale = 1.5f - scale;
         }
+        currentIndex = index;
         if (index >= 0 && index < defaultIconNum) {
             getChildAt(index).setScaleX(scale);
             getChildAt(index).setScaleY(scale);
@@ -204,17 +184,6 @@ public class IconSelecterView extends LinearLayout {
         }
     }
 
-    public void setImages(List<Bitmap> bitmapList) {
-        this.bitmapList = bitmapList;
-        int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            if (null != bitmapList.get(i)) {
-                ((ImageView) getChildAt(i)).setImageBitmap(bitmapList.get(i));
-            }
-        }
-    }
-
-    private final int DURATION = 200;
     private void playActionUpAnimation(final int leftMargin) {
         int endMargin = calculateX(leftMargin);
         ValueAnimator animator = ValueAnimator.ofInt(leftMargin, endMargin);
@@ -230,5 +199,24 @@ public class IconSelecterView extends LinearLayout {
             }
         });
         animator.start();
+    }
+
+    public void setImages(List<Bitmap> bitmapList) {
+        this.bitmapList = bitmapList;
+        int count = getChildCount();
+        for (int i = 0; i < count; i++) {
+            if (null != bitmapList.get(i)) {
+                ((ImageView) getChildAt(i)).setImageBitmap(bitmapList.get(i));
+            }
+        }
+    }
+
+    public int getCurrentIndex() {
+        if (currentIndex < 0) {
+            return 0;
+        } else if (currentIndex >= defaultIconNum) {
+            return defaultIconNum - 1;
+        }
+        return currentIndex;
     }
 }
