@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,6 +79,12 @@ public class IconSelecterView extends LinearLayout {
         iv.setLayoutParams(params);
         iv.setScaleX(0.5f);
         iv.setScaleY(0.5f);
+        iv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClicked(view);
+            }
+        });
         return iv;
     }
 
@@ -187,6 +194,34 @@ public class IconSelecterView extends LinearLayout {
     private void playActionUpAnimation(final int leftMargin) {
         int endMargin = calculateX(leftMargin);
         ValueAnimator animator = ValueAnimator.ofInt(leftMargin, endMargin);
+        int duration = DURATION;
+        animator.setDuration(duration);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int left = (int) valueAnimator.getAnimatedValue();
+                params.leftMargin = left;
+                getChildAt(0).setLayoutParams(params);
+                doScale(left);
+            }
+        });
+        animator.start();
+    }
+
+    private void onItemClicked(View view) {
+        int index = 0;
+        for (; index < defaultIconNum; index++) {
+            if (getChildAt(index) == view) {
+                break;
+            }
+        }
+        playItemClickAnimation(index);
+    }
+
+    private void playItemClickAnimation(final int itemIndex) {
+        int count = itemIndex - 1;
+        int move = -count * (int) centerDistance;
+        ValueAnimator animator = ValueAnimator.ofInt(params.leftMargin, move);
         int duration = DURATION;
         animator.setDuration(duration);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
