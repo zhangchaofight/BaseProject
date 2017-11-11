@@ -11,16 +11,21 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import com.example.administrator.baseproject.utils.ScreenUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Administrator on 2017/11/6.
  */
 
 public class OWLodingView extends LinearLayout{
 
-    private static final float K = 1.73f;
+    private final int STATUS_ORIGIN = 0;
+    private final int STATUS_PLAYING = 1;
+    private final int STATUS_PAUSE = 2;
+    private final int STATUS_END = 3;
+
+    private ValueAnimator animator;
+
+    private int status = 0;
+    private int index = 0;
 
     private int dp000;
     private int dp010;
@@ -31,16 +36,15 @@ public class OWLodingView extends LinearLayout{
     private int dp250;
     private int dp300;
 
-    private List<ZCShapeView> mList;
+    private boolean isLayouted = false;
+    private boolean isCircle = false;
 
     public OWLodingView(Context context) {
-        super(context);
-        init(context);
+        this(context,null);
     }
 
     public OWLodingView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public OWLodingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -59,15 +63,13 @@ public class OWLodingView extends LinearLayout{
         dp200 = 2 * dp100;
 
         setOrientation(VERTICAL);
-        mList = new ArrayList<>();
         ZCShapeView view;
+        LayoutParams params = new LayoutParams(ScreenUtils.dp2px(context, 100),
+                ScreenUtils.dp2px(context, 100));
         for (int i = 0; i < 7; i++) {
             view = new ZCShapeView(context);
-            LayoutParams params = new LayoutParams(ScreenUtils.dp2px(context, 100),
-                    ScreenUtils.dp2px(context, 100));
             view.setLayoutParams(params);
             view.setRotation(90f);
-            mList.add(view);
             addView(view);
         }
         initAnimatation();
@@ -80,45 +82,44 @@ public class OWLodingView extends LinearLayout{
         setMeasuredDimension(3 * dp100, 3 * dp100);
     }
 
-    private boolean isLayouted = false;
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (!isLayouted) {
             isLayouted = true;
-            mList.get(0).layout(dp050, dp000 + dp010, dp150, dp100 + dp010);
-            mList.get(1).layout(dp150, dp000 + dp010, dp250, dp100 + dp010);
-            mList.get(5).layout(dp000, dp100, dp100, dp200);
-            mList.get(6).layout(dp100, dp100, dp200, dp200);
-            mList.get(2).layout(dp200, dp100, dp300, dp200);
-            mList.get(4).layout(dp050, dp200 - dp010, dp150, dp300 - dp010);
-            mList.get(3).layout(dp150, dp200 - dp010, dp250, dp300 - dp010);
+            getChildAt(0).layout(dp050, dp000 + dp010, dp150, dp100 + dp010);
+            getChildAt(1).layout(dp150, dp000 + dp010, dp250, dp100 + dp010);
+            getChildAt(5).layout(dp000, dp100, dp100, dp200);
+            getChildAt(6).layout(dp100, dp100, dp200, dp200);
+            getChildAt(2).layout(dp200, dp100, dp300, dp200);
+            getChildAt(4).layout(dp050, dp200 - dp010, dp150, dp300 - dp010);
+            getChildAt(3).layout(dp150, dp200 - dp010, dp250, dp300 - dp010);
         }
     }
 
-    private boolean isPlaying = false;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (isPlaying) {
-                animator.pause();
-            } else {
-                animator.start();
+            switch (status) {
+                case STATUS_ORIGIN:
+                    play();
+                    break;
+                case STATUS_PLAYING:
+                    pause();
+                    break;
+                case STATUS_PAUSE:
+                    resume();
+                    break;
+                default:
+                    break;
             }
         }
         return super.onTouchEvent(event);
     }
 
-    /**
-     * index / 7 % 2
-     */
-
-    boolean isCircle = false;
-    int index = 0;
-    private ValueAnimator animator;
     private void initAnimatation () {
         animator = ValueAnimator.ofFloat(1, 0);
-        animator.setDuration(300);
+        animator.setDuration(400);
         animator.setRepeatCount(-1);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -127,9 +128,7 @@ public class OWLodingView extends LinearLayout{
                 if (isCircle) {
                     scale = 1- scale;
                 }
-                mList.get(index).setScaleX(scale);
-                mList.get(index).setScaleY(scale);
-                mList.get(index).setAlpha(scale);
+                changeScaleAlpha(scale);
             }
         });
         animator.addListener(new AnimatorListenerAdapter() {
@@ -141,53 +140,40 @@ public class OWLodingView extends LinearLayout{
                     isCircle = !isCircle;
                 }
             }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                mList.get(index).setScaleX(isCircle ? 1 : 0);
-                mList.get(index).setScaleY(isCircle ? 1 : 0);
-                mList.get(index).setAlpha(isCircle ? 1 : 0);
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mList.get(index).setScaleX(!isCircle ? 1 : 0);
-                mList.get(index).setScaleY(!isCircle ? 1 : 0);
-                mList.get(index).setAlpha(!isCircle ? 1 : 0);
-            }
         });
     }
 
-    // TODO: 2017/11/11 动画控制方法待实现？
+    private void changeScaleAlpha(float value) {
+        getChildAt(index).setScaleX(value);
+        getChildAt(index).setScaleY(value);
+        getChildAt(index).setAlpha(value);
+    }
+
     public void play() {
         if (animator != null) {
             animator.start();
+            status = STATUS_PLAYING;
         }
     }
 
     public void pause() {
         if (animator != null) {
             animator.pause();
+            status = STATUS_PAUSE;
         }
     }
 
     public void resume() {
         if (animator != null) {
             animator.resume();
+            status = STATUS_PLAYING;
         }
     }
 
     public void end() {
         if (animator != null) {
             animator.end();
-        }
-    }
-
-    public void cancel() {
-        if (animator != null) {
-            animator.cancel();
+            status = STATUS_END;
         }
     }
 }

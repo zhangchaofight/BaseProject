@@ -97,4 +97,8 @@ public class ZCShapeView extends View {
         path.close();
         canvas.drawPath(path, paint);
     }
+
+    public void setColor(int color) {
+        this.mColor = color;
+    }
 }
