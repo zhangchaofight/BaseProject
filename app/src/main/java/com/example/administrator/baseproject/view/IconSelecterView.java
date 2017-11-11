@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +27,6 @@ public class IconSelecterView extends LinearLayout {
 
     private final static int DURATION = 200;
 
-    private int currentIndex = 1;
     private int defaultIconNum = 5;
 
     private MarginLayoutParams params;
@@ -179,7 +179,6 @@ public class IconSelecterView extends LinearLayout {
             index--;
             scale = 1.5f - scale;
         }
-        currentIndex = index;
         if (index >= 0 && index < defaultIconNum) {
             getChildAt(index).setScaleX(scale);
             getChildAt(index).setScaleY(scale);
@@ -247,11 +246,23 @@ public class IconSelecterView extends LinearLayout {
     }
 
     public int getCurrentIndex() {
-        if (currentIndex < 0) {
+        int index = -params.leftMargin / (int) centerDistance + 1;
+        int delta = Math.abs(params.leftMargin) % (int) centerDistance;
+        if (params.leftMargin <= 0) {
+            if (delta > (int) centerDistance / 2) {
+                index++;
+            }
+        } else {
+            index--;
+            if (delta < (int) centerDistance / 2) {
+                index++;
+            }
+        }
+        if (index < 0) {
             return 0;
-        } else if (currentIndex >= defaultIconNum) {
+        } else if (index >= defaultIconNum) {
             return defaultIconNum - 1;
         }
-        return currentIndex;
+        return index;
     }
 }

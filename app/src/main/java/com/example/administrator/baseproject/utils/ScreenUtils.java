@@ -27,4 +27,16 @@ public class ScreenUtils {
     public static int getScreenWidth(Context context){
         return getScreenHW(context)[1];
     }
+
+    public static int dp2px(Context context, float dpValue) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        float density = dm.density;
+        return (int) (dpValue * density + 0.5f);
+    }
+
+    public static int px2dp(Context context, float pxValue) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        float density = dm.density;
+        return (int) (pxValue / density + 0.5f);
+    }
 }

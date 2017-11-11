@@ -67,7 +67,7 @@ public class ZCShapeView extends View {
                 mSize = size;
                 break;
         }
-        return mSize / 4;
+        return mSize;
     }
 
     @Override
