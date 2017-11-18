@@ -52,10 +52,10 @@ public class KeyBoardLinearLayout  extends LinearLayout {
             return;
         }
         Log.d(TAG, "onSizeChanged: " + h + " oldh" + oldh);
-        if (h - oldh > 0 && h - oldh < height / 2) {
+        if (h - oldh > height / 4 && h - oldh < height / 2) {
             Log.d(TAG, "onSizeChanged: hide");
             onKeyBoardChangeListener.onKeyBoardHide();
-        } else if (h - oldh < 0 && h - oldh > -height / 2) {
+        } else if (h - oldh < -height / 4 && h - oldh > -height / 2) {
             Log.d(TAG, "onSizeChanged: show");
             onKeyBoardChangeListener.onKeyBoardShow();
         }
